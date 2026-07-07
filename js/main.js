@@ -293,12 +293,72 @@ document.addEventListener('DOMContentLoaded', () => {
 
   window.addEventListener('scroll', updateActiveNav, { passive: true });
 
-  /* ---------- 10. FormSpree Custom Handling ---------- */
+  /* ---------- 10. FormSpree & Visme Custom Handling ---------- */
   const contactForm = document.getElementById('contact-form');
   const formSuccess = document.getElementById('form-success');
+  const vismeContainer = document.getElementById('visme-container');
 
+  const SUBMISSION_LIMIT = 70;
+  let submissionCount = parseInt(localStorage.getItem('dtw_form_submissions_count') || '0', 10);
+
+  // Helper to switch to Formspree form (default fallback)
+  function switchToFormspree() {
+    if (vismeContainer) vismeContainer.style.display = 'none';
+    if (contactForm) contactForm.style.display = 'flex';
+  }
+
+  // Helper to switch to Visme form
+  function switchToVisme() {
+    if (contactForm) contactForm.style.display = 'none';
+    if (vismeContainer) vismeContainer.style.display = 'block';
+  }
+
+  // Determine if connection is slow/bad latency
+  let isConnectionSlow = false;
+  if (navigator.connection) {
+    const conn = navigator.connection;
+    if (conn.saveData || 
+        ['slow-2g', '2g', '3g'].includes(conn.effectiveType) || 
+        (conn.rtt && conn.rtt > 800)) {
+      isConnectionSlow = true;
+    }
+  }
+
+  // Determine form to load
+  if (submissionCount < SUBMISSION_LIMIT && !isConnectionSlow) {
+    const vismeScript = document.createElement('script');
+    vismeScript.src = "https://static-bundles.visme.co/forms/vismeforms-embed.js";
+    vismeScript.async = true;
+
+    // Timeout fallback (4s)
+    const loadTimeout = setTimeout(() => {
+      console.warn("Visme script loading timed out. Falling back to default Formspree form.");
+      vismeScript.remove();
+      switchToFormspree();
+    }, 4000);
+
+    vismeScript.onload = () => {
+      clearTimeout(loadTimeout);
+      setTimeout(() => {
+        switchToVisme();
+        console.log("Visme animated contact form loaded successfully.");
+      }, 500);
+    };
+
+    vismeScript.onerror = () => {
+      clearTimeout(loadTimeout);
+      console.warn("Failed to load Visme script. Falling back to default Formspree form.");
+      switchToFormspree();
+    };
+
+    document.body.appendChild(vismeScript);
+  } else {
+    // Show static Formspree form by default if connection is slow or submission limit is met
+    switchToFormspree();
+  }
+
+  // FormSpree submit handler
   if (contactForm && formSuccess) {
-    // Listen for FormSpree success event
     contactForm.addEventListener('submit', () => {
       const submitBtn = contactForm.querySelector('[data-fs-submit-btn]');
       if (submitBtn) {
@@ -307,18 +367,55 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    // Watch for form success via MutationObserver on the success element
     const successObserver = new MutationObserver((mutations) => {
       mutations.forEach(mutation => {
         if (mutation.type === 'childList' && formSuccess.textContent.trim()) {
           formSuccess.classList.add('active');
           contactForm.style.display = 'none';
+
+          // Increment count
+          let count = parseInt(localStorage.getItem('dtw_form_submissions_count') || '0', 10);
+          count++;
+          localStorage.setItem('dtw_form_submissions_count', count.toString());
+          console.log(`Formspree submitted! Current count: ${count}/70`);
         }
       });
     });
 
     successObserver.observe(formSuccess, { childList: true, characterData: true, subtree: true });
   }
+
+  // Listen for Visme iframe message events
+  window.addEventListener('message', (event) => {
+    const isVismeMessage = event.origin.includes('visme.co') || 
+                           (event.data && typeof event.data === 'string' && event.data.includes('visme'));
+                           
+    if (isVismeMessage) {
+      let data = event.data;
+      if (typeof data === 'string') {
+        try {
+          data = JSON.parse(data);
+        } catch (e) {
+          // not JSON
+        }
+      }
+
+      // Check for common submission keywords in the message payload
+      const isSubmitEvent = (data && (data.type === 'visme-form-submit' || data.event === 'submit' || data.type === 'submit')) ||
+                            (typeof event.data === 'string' && (event.data.includes('submit') || event.data.includes('completed')));
+
+      if (isSubmitEvent) {
+        let count = parseInt(localStorage.getItem('dtw_form_submissions_count') || '0', 10);
+        count++;
+        localStorage.setItem('dtw_form_submissions_count', count.toString());
+        console.log(`Visme form submitted! Current count: ${count}/70`);
+
+        if (count >= SUBMISSION_LIMIT) {
+          switchToFormspree();
+        }
+      }
+    }
+  });
 
   /* ---------- 11. Lazy Load YouTube Iframes ---------- */
   // YouTube iframes are already lazy loaded via loading="lazy" attribute
