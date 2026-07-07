@@ -1,16 +1,79 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100%" height="100%">
-  <!-- Neubrutalist base block shadow -->
-  <rect x="10" y="10" width="80" height="80" fill="#0A1628" rx="0" />
-  <!-- Main brand colored container -->
-  <rect x="6" y="6" width="80" height="80" fill="#FF6B35" stroke="#0A1628" stroke-width="5" rx="0" />
-  
-  <!-- Stylized graduation mortarboard top / Arrow representing Victory -->
-  <path d="M 46 22 L 72 35 L 46 48 L 20 35 Z" fill="#00E699" stroke="#0A1628" stroke-width="4.5" stroke-linejoin="round" />
-  <!-- Cap skull portion / D-loop base -->
-  <path d="M 31 41 L 31 53 C 31 63, 61 63, 61 53 L 61 41" fill="none" stroke="#0A1628" stroke-width="4.5" stroke-linecap="round" />
-  <!-- Victory Star/Sparkle -->
-  <path d="M 46 42 L 49 50 L 57 50 L 50 54 L 53 62 L 46 57 L 39 62 L 42 54 L 35 50 L 43 50 Z" fill="#FFB020" stroke="#0A1628" stroke-width="2" stroke-linejoin="round" />
-  
-  <!-- Mini tassel -->
-  <path d="M 72 35 L 78 46 L 78 54" fill="none" stroke="#0A1628" stroke-width="2.5" stroke-linecap="round" />
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 500 500" width="100%" height="100%">
+  <defs>
+    <!-- Brand Gradient for the DTW Letters -->
+    <linearGradient id="dtw-gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FF6B35" />
+      <stop offset="100%" stop-color="#FFB020" />
+    </linearGradient>
+    
+    <!-- Mask to create clean gaps in the outer circle -->
+    <mask id="circle-mask">
+      <rect x="0" y="0" width="500" height="500" fill="white" />
+      <!-- Left pin gap -->
+      <rect x="65" y="240" width="30" height="20" fill="black" />
+      <!-- Right pin gap -->
+      <rect x="405" y="240" width="30" height="20" fill="black" />
+      <!-- Top-right checkmark arrow gap -->
+      <polygon points="380,120 440,150 420,240 370,210" fill="black" />
+    </mask>
+  </defs>
+
+  <!-- Outer Circle (with mask for gaps) -->
+  <circle cx="250" cy="250" r="170" fill="none" stroke="#0A1628" stroke-width="4.5" mask="url(#circle-mask)" />
+
+  <!-- Left Horizontal Pin -->
+  <line x1="40" y1="250" x2="90" y2="250" stroke="#0A1628" stroke-width="4.5" stroke-linecap="round" />
+  <circle cx="90" cy="250" r="5" fill="#0A1628" stroke="#0A1628" stroke-width="1.5" />
+
+  <!-- Right Horizontal Pin -->
+  <line x1="410" y1="250" x2="460" y2="250" stroke="#0A1628" stroke-width="4.5" stroke-linecap="round" />
+  <circle cx="410" cy="250" r="5" fill="#0A1628" stroke="#0A1628" stroke-width="1.5" />
+
+  <!-- ==================== DTW LETTERS (GRADIENT FILL) ==================== -->
+  <g fill="url(#dtw-gradient)">
+    <!-- Letter D Loop -->
+    <path d="M 128 175 
+             C 185 175, 205 195, 205 232.5 
+             C 205 270, 185 290, 128 290 
+             L 128 274 
+             C 170 274, 188 258, 188 232.5 
+             C 188 207, 170 191, 128 191 Z" />
+             
+    <!-- Letter D Top Vertical Stem -->
+    <path d="M 112 175 L 128 175 L 128 220 L 112 220 Z" />
+    
+    <!-- Letter D Bottom Vertical Stem (with diagonal cut) -->
+    <path d="M 112 250 L 128 238 L 128 290 L 112 290 Z" />
+
+    <!-- Letter T Top Bar -->
+    <path d="M 175 175 L 295 175 L 295 191 L 175 191 Z" />
+    
+    <!-- Letter T Vertical Stem -->
+    <path d="M 223 191 L 241 191 L 241 290 L 223 290 Z" />
+
+    <!-- Letter W (Filled Polygon structure matching checkmark) -->
+    <path d="M 248 191 
+             L 282 290 
+             L 299 290 
+             L 331 191 
+             L 348 191 
+             L 380 290 
+             L 396 290 
+             L 435 152 
+             L 418 146 
+             L 388 252 
+             L 357 191 
+             L 339 191 
+             L 307 252 
+             L 276 191 Z" />
+  </g>
+
+  <!-- ==================== TEXT & ACCENTS (MIDNIGHT NAVY) ==================== -->
+  <!-- "DESTINED TO WIN" Text -->
+  <text x="250" y="333" font-family="'Inter', sans-serif" font-size="20.5" font-weight="900" fill="#0A1628" text-anchor="middle" letter-spacing="8">DESTINED TO WIN</text>
+
+  <!-- Bottom Divider Line with Center Dot -->
+  <line x1="180" y1="358" x2="240" y2="358" stroke="#0A1628" stroke-width="2" />
+  <circle cx="250" cy="358" r="4.5" fill="#0A1628" />
+  <line x1="260" y1="358" x2="320" y2="358" stroke="#0A1628" stroke-width="2" />
 </svg>
