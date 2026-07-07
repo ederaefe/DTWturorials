@@ -41,6 +41,9 @@ yarn-error.log*
 dist/
 build/
 
+# Legacy (old WordPress export)
+legacy/
+
 # Misc
 *.zip
 *.tar.gz
