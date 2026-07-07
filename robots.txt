@@ -1,0 +1,25 @@
+# ==========================================================================
+# DTW Tutorials — Robots.txt
+# Search Engine Crawler Directives
+# ==========================================================================
+
+User-agent: *
+Allow: /
+
+# Block old WordPress export directory from indexing
+Disallow: /page_content/
+
+# Block cached/minified WP assets
+Disallow: /page_content/wp_content/cache/
+Disallow: /page_content/wp_includes/
+
+# Block ad-related third-party directories
+Disallow: /page_content/pagead2.googlesyndication.com/
+Disallow: /page_content/fundingchoicesmessages.google.com/
+Disallow: /page_content/ogamarketer.com/
+
+# Sitemap location
+Sitemap: https://dtwtutorials.com/sitemap.xml
+
+# Crawl-delay (optional, be polite to crawlers)
+Crawl-delay: 1
