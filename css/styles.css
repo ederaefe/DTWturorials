@@ -526,12 +526,46 @@ h6 { font-size: var(--fs-md); }
   overflow: hidden;
 }
 
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--sp-8);
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+
 .hero-content {
   position: relative;
   z-index: 2;
   text-align: center;
   max-width: 720px;
   margin-inline: auto;
+}
+
+.hero-image-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  animation: fadeUp 0.8s var(--ease-out) 0.6s both;
+}
+
+.hero-image {
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-xl);
+  width: 100%;
+  max-width: 440px;
+  height: auto;
+  object-fit: cover;
+  border: 6px solid var(--clr-white);
+  transform: rotate(1.5deg);
+  transition: transform var(--duration-normal) var(--ease-out);
+}
+
+.hero-image:hover {
+  transform: rotate(0deg) scale(1.02);
 }
 
 .hero-badge {
@@ -570,7 +604,7 @@ h6 { font-size: var(--fs-md); }
   animation: blink-caret 0.75s step-end infinite;
 }
 
-.hero p {
+.hero-content p {
   font-size: var(--fs-lg);
   color: var(--clr-text-secondary);
   margin-bottom: var(--sp-8);
@@ -584,6 +618,20 @@ h6 { font-size: var(--fs-md); }
   gap: var(--sp-4);
   align-items: center;
   animation: fadeUp 0.8s var(--ease-out) 0.8s both;
+}
+
+@media (min-width: 768px) {
+  .hero-grid {
+    grid-template-columns: 1.2fr 0.8fr;
+  }
+  .hero-content {
+    text-align: left;
+    margin-inline: 0;
+  }
+  .hero-actions {
+    flex-direction: row;
+    justify-content: flex-start;
+  }
 }
 
 /* — Decorative floating shapes — */
@@ -1655,4 +1703,65 @@ h6 { font-size: var(--fs-md); }
 
   body { font-size: 12pt; color: #000; }
   a { color: #000; text-decoration: underline; }
+}
+
+/* ---------- 20. Lucide Icon Sizing & Customizations ---------- */
+.lucide {
+  stroke-width: 2px;
+  display: inline-block;
+  vertical-align: middle;
+  width: 24px;
+  height: 24px;
+}
+
+.nav-logo-icon .lucide {
+  width: 20px;
+  height: 20px;
+}
+
+.btn-icon .lucide,
+.btn .lucide {
+  width: 18px;
+  height: 18px;
+}
+
+.subjects-group-title .lucide {
+  width: 24px;
+  height: 24px;
+  margin-right: var(--sp-2);
+  color: var(--clr-primary-500);
+}
+
+.subject-card-icon .lucide {
+  width: 28px;
+  height: 28px;
+  color: var(--clr-primary-500);
+}
+
+.subject-card-arrow .lucide {
+  width: 16px;
+  height: 16px;
+  color: var(--clr-text-muted);
+  transition: transform var(--duration-normal) var(--ease-out);
+}
+
+.subject-card:hover .subject-card-arrow .lucide {
+  transform: translate(2px, -2px);
+  color: var(--clr-primary-500);
+}
+
+.cbt-feature-icon .lucide {
+  width: 16px;
+  height: 16px;
+  color: var(--clr-accent-500);
+}
+
+.footer-social .lucide {
+  width: 20px;
+  height: 20px;
+}
+
+.back-to-top .lucide {
+  width: 20px;
+  height: 20px;
 }
